@@ -15,14 +15,21 @@ redis_client = redis.Redis(
     db=0
 )
 
-# MySQL configuration
 def get_db_connection():
+    # Read password from Docker secret file
+    password_file = os.environ.get("DB_PASSWORD_FILE")
+    if password_file:
+        with open(password_file, "r") as f:
+            db_password = f.read().strip()
+    else:
+        db_password = os.getenv("MYSQL_PASSWORD", "password")
+
     return mysql.connector.connect(
         host=os.getenv('MYSQL_HOST', 'mysql'),
         user=os.getenv('MYSQL_USER', 'root'),
-        password=os.getenv('MYSQL_PASSWORD', 'password'),
+        password=db_password,
         database=os.getenv('MYSQL_DATABASE', 'mydb')
-    )
+        )
 
 @app.route('/')
 def index():

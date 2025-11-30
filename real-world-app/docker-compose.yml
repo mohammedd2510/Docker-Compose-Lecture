@@ -10,8 +10,10 @@ services:
       - REDIS_PORT=6379
       - MYSQL_HOST=mysql
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=password
+      - DB_PASSWORD_FILE=/run/secrets/mysql_root_password
       - MYSQL_DATABASE=mydb
+    secrets:
+      - mysql_root_password
     depends_on:
       - redis
       - mysql
@@ -28,12 +30,18 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
       - MYSQL_DATABASE=mydb
     volumes:
       - mysql_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
+    secrets:
+      - mysql_root_password
 
 volumes:
   redis_data:
   mysql_data:
+ 
+secrets:
+  mysql_root_password:
+    file: ./mysql_root_password.txt
