@@ -4,7 +4,7 @@ services:
   web:
     build: .
     ports:
-      - "6000:6000"
+      - "6005:6000"
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379

@@ -1,17 +1,35 @@
 services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+    restart: always
+    networks:
+      - frontend-nginx
   frontend:
     build:
       context: frontend
-      target: development
-    ports:
-      - 3000:3000
     volumes:
       - ./frontend:/usr/src/app
     restart: always
     networks:
       - react-express
+      - frontend-nginx
     depends_on:
       - backend
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"      # Max 50% of one CPU
+          memory: 512m      # Max memory
+          pids: 100         # Max number of processes
+        reservations:
+          cpus: "0.25"
+          memory: 256m
 
   backend:
     restart: always
@@ -38,6 +56,7 @@ services:
 networks:
   react-express:
   express-mongo:
+  frontend-nginx:
 
 volumes:
   mongo_data:

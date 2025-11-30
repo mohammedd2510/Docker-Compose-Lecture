@@ -14,6 +14,6 @@ COPY whoami.sh .
 
 # Make script executable
 RUN chmod +x whoami.sh
-USER appuser
+#USER appuser
 # Default command
 CMD ["./whoami.sh"]
