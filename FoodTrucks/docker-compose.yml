@@ -15,7 +15,7 @@ services:
     depends_on:
       - es
     ports:
-      - 5005:5000
+      - 5000:5000
     volumes:
       - ./flask-app:/opt/flask-app
     healthcheck:
@@ -24,7 +24,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-      
     restart: always
 volumes:
     esdata1:

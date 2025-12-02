@@ -1,20 +1,18 @@
-# Use official Node.js image
-FROM node:18-alpine
+# syntax=docker/dockerfile:1.4
 
-# Set working directory
-WORKDIR /app
+FROM node:lts-buster-slim 
 
-# Copy dependency files
-COPY package*.json ./
+# Create app directory
+WORKDIR /usr/src/app
 
-# Install dependencies
-RUN npm install 
+COPY package.json /usr/src/app/package.json
+COPY package-lock.json /usr/src/app/package-lock.json
+RUN npm ci
 
-# Copy source code
-COPY . .
+COPY . /usr/src/app
 
-# Expose port (adjust based on your app)
 EXPOSE 3000
 
-# Start the app
-ENTRYPOINT ["npm", "start"]
+CMD [ "npm", "run", "dev" ]
+
+

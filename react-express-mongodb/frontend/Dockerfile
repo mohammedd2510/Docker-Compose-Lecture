@@ -1,20 +1,24 @@
-# Use official Node.js image
-FROM node:18-alpine
+ FROM node:lts-buster 
+# FROM node:20-alpine
+# Create app directory
+# RUN npm install -g npm@latest
+WORKDIR /usr/src/app
 
-# Set working directory
-WORKDIR /app
+# Copy dependency definitions
+COPY package.json /usr/src/app
+COPY package-lock.json /usr/src/app
 
-# Copy dependency files
-COPY package*.json ./
+# Install dependecies
+#RUN npm set progress=false \
+#    && npm config set depth 0 \
+#    && npm i install
 
-# Install dependencies
-RUN npm install 
+RUN npm install
+# Get all the code needed to run the app
+COPY . /usr/src/app
 
-# Copy source code
-COPY . .
-
-# Expose port (adjust based on your app)
+# Expose the port the app runs in
 EXPOSE 3000
 
-# Start the app
-ENTRYPOINT ["npm", "start"]
+# Serve the app
+CMD ["npm", "start"]

@@ -15,6 +15,7 @@ services:
       context: frontend
     volumes:
       - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
     restart: always
     networks:
       - react-express
@@ -37,6 +38,7 @@ services:
       context: backend
     volumes:
       - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - mongo
     networks:
